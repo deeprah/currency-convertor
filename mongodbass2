@@ -1,0 +1,339 @@
+
+
+ $expr:{$gt:[{$size:"$skills"},3]:::::for find the skils gerater thean 3 use this syntax
+
+1::
+
+
+
+
+
+[
+  {
+    $group:
+      {
+        _id:"$role",
+        avgsalary:{$avg:"$salary"}
+  }
+  }
+]
+
+2::
+[
+  {
+    $group:
+      {
+        _id:"$city",
+        toatlnoofusersincity:{$sum:1}
+  }
+  }
+]
+
+
+3::
+
+
+[
+  {
+    $group:
+      {
+        _id:"$gender",
+        avgage:{$avg:"$age"}
+  }
+  }
+]
+
+
+4::
+
+
+[
+  {
+    $group:
+      {
+        _id:["$role","$city"],
+      totalsalary:{$sum:"$salary"}
+  }
+  }
+]
+
+
+5::
+
+
+
+[
+  {
+    $group:
+      {
+        _id:["$gender","$city"],
+      maxsalary:{$max:"$salary"}
+  }
+  }
+]
+
+
+6::
+
+
+
+[
+  {$unwind:"$skills"
+  },
+  {
+    $group:
+      {
+        _id:"$skills",
+         countofusers:{$sum:1}
+  }
+  }
+]
+
+7::
+
+
+[
+  
+  {
+    $group:
+      {
+        _id:"$role",
+         minage:{$min:"$age"}
+  }
+  }
+]
+
+8::
+
+
+
+[
+  
+  {
+    $group:
+      {
+        _id:["$city","gender"],
+         avgsalary:{$avg:"$salary"}
+  }
+  }
+]
+9::
+
+[
+  {
+    $unwind:"$city"
+      },
+  {
+    $group:
+    {
+      _id:"$role",
+      username:{$addToSet:"$city"},
+}
+  }
+  ]
+
+10::
+
+[
+  {
+    $group: {
+      _id: "$age",
+      countuser: { $sum: 1 }
+    }
+  }
+]
+
+11::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+12::
+
+
+
+[
+  {
+    $group: {
+      _id: "$role",
+      highsalary:{$max:"$salary"}
+     
+    }
+  }
+]
+
+
+13::
+
+
+[
+  {
+    $group: {
+      _id: "$gender",
+      noofuser:{$sum:1}
+     
+    }
+  }
+]
+
+14::
+
+[
+  {
+    $group: {
+      _id: "$city",
+      avgage:{$avg:"$age"}
+     
+    }
+  }
+]
+
+15::
+[
+  {
+    $group: {
+      _id: ["$role","$gender"],
+      avgsalary:{$avg:"$salary"}
+     
+    }
+  }
+]
+
+16::
+[
+  {
+    $unwind:"$skills"
+  },
+  {
+    $group: {
+      _id: "$skills",
+      totalsalary:{$sum:1}
+     
+    }
+  }
+]
+
+17::
+
+[
+  
+  {
+    $group: {
+      _id: "$age",
+      maxsalary:{$sum:"$salary"}
+     
+    }
+  }
+]
+
+18::
+[
+  {
+    $match: {
+      $expr: { $gt: [{ $size: "$skills" }, 3] }
+    }
+  },
+  {
+    $group: {
+      _id: "$role",
+      count: { $sum: 1 }
+    }
+  }
+]
+
+
+19::
+
+
+
+20::
+
+[
+  
+  {
+    $group: {
+      _id: "$role",
+      lowsalary:{$min:"$salary"},
+       highsalary:{$max:"$salary"}
+      
+      
+    }
+  }
+]
+
+
+
+21::
+
+
+[
+  {
+    $group: {
+      _id: {
+        city: "$city",
+      },
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $project: {
+      _id: "$_id.city",
+      avgUsersPerRole: { $avg: "$count" }
+    }
+  }
+]
+
+
+
+22::
+
+[
+  {
+    $group: {
+      _id: {
+        gender: "$gender",role:"$role"
+      },
+      countsalary:{$sum:"$salary"}
+    }
+  }
+]
+
+
+23:
+
+[
+  {
+    $match: {
+      salary: { $gt: 1000000 } // Filtering documents where salary is greater than 1,000,000
+    }
+  },
+  {
+    $group: {
+      _id: "$age",
+      count: { $sum: 1 },
+      users: { $push: "$$ROOT" }
+    }
+  }
+]
+
+
+
+
+
+
+
